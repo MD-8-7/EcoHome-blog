@@ -1,0 +1,16 @@
+<div class="mw8 center ph3 pv4">
+  <h2 class="f3 tc">Editor's picks — top deals</h2>
+  <div class="flex flex-wrap justify-center">
+    {{ range .Params.featured }}
+    <div class="pa3 ma2 bg-white br2 shadow-1" style="width:260px;">
+      <a href="{{ .affiliate_url | safeURL }}?utm_source=ecohome.blog&utm_medium=affiliate&utm_campaign=homepage" rel="sponsored noopener" target="_blank" style="text-decoration:none;color:inherit;">
+        <img src="{{ .image }}" alt="{{ .title }}" style="height:140px;object-fit:cover;width:100%;" />
+        <h4 class="mt2 mb1">{{ .title }}</h4>
+        <p class="f7 grey-4 mb2">{{ .excerpt }}</p>
+        {{ with .rating }}<div class="mb2">Rating: {{ . }} / 5</div>{{ end }}
+        <div class="b">Buy now ›</div>
+      </a>
+    </div>
+    {{ end }}
+  </div>
+</div>

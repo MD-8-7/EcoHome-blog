@@ -3,19 +3,43 @@
   {{/* hero: uses page params (image, title, subtitle) */}}
   {{ partial "jumbotron" (dict "imageUrl" .Params.image "title" .Title "subtitle" .Params.subtitle) }}
 
-  {{/* optional short intro if set in site/content/_index.md */}}
-  {{ with .Params.blurb }}
-    {{ partial "short-text" . }}
-  {{ end }}
+  {{/* featured deals / editor picks */}}
+  {{ partial "featured-products" . }}
+
+  {{/* Best-of / categories quick links */}}
+  <div class="mw8 center ph3 pv4">
+    <div class="flex flex-wrap justify-center">
+      {{ range .Params.top_categories }}
+      <a href="{{ .url }}" class="db pa3 ma2 bg-white br2 shadow-1" style="width:220px;text-decoration:none;color:inherit;">
+        <img src="{{ .image }}" alt="{{ .name }}" style="height:80px;object-fit:contain;display:block;margin:0 auto 8px;" />
+        <div class="tc b">{{ .name }}</div>
+        <div class="tc grey-4 f7">{{ .subtitle }}</div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
 
   {{/* blog listing (existing partial) */}}
   {{ partial "blog" . }}
 
-  {{/* spacer: leave some breathing room before SEO text */}}
-  <div class="pv5"></div>
+  {{/* newsletter CTA: small inline capture under blog */}}
+  {{ partial "newsletter-cta" . }}
+
+  {{/* spacer for breathing room */}}
+  <div class="pv4"></div>
+
+  {{/* comparison teaser */}}
+  <div class="mw7 center ph3 pv3">
+    <div class="bg-light-blue pa3 br2 tc">
+      <h3 class="mt0">Compare the top picks</h3>
+      <p class="mb3">Short comparison to help you pick the best product for your needs.</p>
+      <a class="btn" href="/compare/" rel="noopener">See the comparison</a>
+    </div>
+  </div>
 
   {{/* SEO text area (renders .Params.seo if present) */}}
   {{ with .Params.seo }}
+  <div class="pv5"></div>
   <div class="mw7 center ph3 pv4">
     <div class="cms" style="text-align:justify;">{{ . | safeHTML }}</div>
   </div>
