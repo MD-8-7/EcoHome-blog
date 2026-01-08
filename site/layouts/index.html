@@ -1,13 +1,24 @@
 {{ define "main" }}
 
-{{ partial "jumbotron" (dict "imageUrl" .Params.image "title" .Title "subtitle" .Params.subtitle) }}
+  {{/* hero: uses page params (image, title, subtitle) */}}
+  {{ partial "jumbotron" (dict "imageUrl" .Params.image "title" .Title "subtitle" .Params.subtitle) }}
 
-{{ partial "short-text" .Params.blurb}}
+  {{/* optional short intro if set in site/content/_index.md */}}
+  {{ with .Params.blurb }}
+    {{ partial "short-text" . }}
+  {{ end }}
 
-{{ partial "2-up" .Params }}
+  {{/* blog listing (existing partial) */}}
+  {{ partial "blog" . }}
 
-{{ partial "text-and-image" (dict "heading" .Params.values.heading "text" .Params.values.text "buttonText" "Read more" "buttonLink" "/values") }}
+  {{/* spacer: leave some breathing room before SEO text */}}
+  <div class="pv5"></div>
 
-{{ partial "blog" . }}
+  {{/* SEO text area (renders .Params.seo if present) */}}
+  {{ with .Params.seo }}
+  <div class="mw7 center ph3 pv4">
+    <div class="cms" style="text-align:justify;">{{ . | safeHTML }}</div>
+  </div>
+  {{ end }}
 
 {{ end }}
