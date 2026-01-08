@@ -48,3 +48,34 @@
 
 </footer>
 
+<script>
+// Affiliate click tracking: pushes to dataLayer for GTM and falls back to gtag if present.
+// Listens for clicks on <a> that include rel="sponsored" (per our link convention).
+document.addEventListener('click', function(e){
+  var a = e.target.closest && e.target.closest('a[rel~="sponsored"]');
+  if(!a) return;
+  try{
+    var affiliateId = a.getAttribute('data-affiliate') || '';
+    var href = a.href || '';
+    // dataLayer push for GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'affiliate_click',
+      affiliate_id: affiliateId,
+      href: href,
+      page_path: window.location.pathname
+    });
+    // Optional GA4 fallback if gtag is available
+    if(window.gtag){
+      gtag('event', 'affiliate_click', {
+        event_category: 'affiliate',
+        event_label: affiliateId || href,
+        value: 1
+      });
+    }
+  }catch(err){
+    // fail silently
+    console.warn('Affiliate tracking error', err);
+  }
+}, false);
+</script>
